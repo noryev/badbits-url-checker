@@ -38,4 +38,4 @@ def main():
 if __name__ == "__main__":
     main()
 
-# Instead of using precached list, see if there are any changes to the list // Cant turn this into a weapon of Math Destruction
+# Instead of using pre-cached list, see if there are any changes to the list // Cant turn this into a weapon of Math Destruction
