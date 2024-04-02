@@ -1,8 +1,6 @@
 import requests
 import hashlib
-
-# Set the path of the text file containing SHA hashes here
-hashes_txt_file_path = "badbits.txt"
+import base58
 
 def download_file(url):
     try:
@@ -13,29 +11,26 @@ def download_file(url):
         print(f"Error downloading file: {e}")
         return None
 
-def compute_sha_hash(file_content):
-    sha_hash = hashlib.sha256(file_content).hexdigest()
-    return sha_hash
+def compute_double_sha_hash(file_content):
+    # First SHA-256 hash
+    first_hash = hashlib.sha256(file_content).digest()
+    # Second SHA-256 hash, if you want to double hash
+    double_hash = hashlib.sha256(first_hash).digest()
+    return double_hash
 
-def check_hash_in_list(sha_hash, file_path):
-    with open(file_path, 'r') as file:
-        hashes = file.read().splitlines()
-        return sha_hash in hashes
+def encode_to_cid(hash_bytes):
+    # Convert the hash into a CIDv0 (example using base58)
+    cid = base58.b58encode(hash_bytes).decode('utf-8')
+    return cid
 
 def main():
     url = input("Enter the URL of the file: ")
 
     file_content = download_file(url)
     if file_content is not None:
-        sha_hash = compute_sha_hash(file_content)
-        print(f"SHA Hash of downloaded file: {sha_hash}")
-
-        if check_hash_in_list(sha_hash, hashes_txt_file_path):
-            print("The hash matches one in the list.")
-        else:
-            print("No matching hash found in the list.")
+        double_hash = compute_double_sha_hash(file_content)
+        cid = encode_to_cid(double_hash)
+        print(f"CID-like string of downloaded file: {cid}")
 
 if __name__ == "__main__":
     main()
-
-# Instead of using pre-cached list, see if there are any changes to the list // Cant turn this into a weapon of Math Destruction
