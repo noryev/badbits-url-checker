@@ -10,6 +10,6 @@ This tool allows you to check the content of a public URL against the BadBits re
 For example:
 
 ```bash
-python3 badbits_url_checker.py http://example.com
+python3 badbits-url-checker.py http://example.com
 ```
 Replace http://example.com with the URL you wish to check.
